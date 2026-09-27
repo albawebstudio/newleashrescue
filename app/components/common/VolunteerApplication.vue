@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useFosterData } from '~/composables/useFosterData'
+import { useVolunteerData } from '~/composables/useVolunteerData'
 
-const { fosterApplication, onlineApplications } = useFosterData()
+const { volunteerApplication, onlineApplications } = useVolunteerData()
 </script>
 
 <template>
@@ -21,7 +21,7 @@ const { fosterApplication, onlineApplications } = useFosterData()
     <p class="text-center text-sm text-blueGray-600">Prefer a printable form? Download a copy below.</p>
     <div class="flex flex-col flex-wrap justify-center gap-4 sm:flex-row">
       <a
-        v-for="application in fosterApplication"
+        v-for="application in volunteerApplication"
         :key="application.href"
         :href="application.href"
         :download="application.filename"
