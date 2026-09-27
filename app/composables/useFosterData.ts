@@ -1,16 +1,16 @@
 import { ref } from 'vue'
-import type { Img } from '~/models/types'
+import type { Img, OnlineApplications } from '~/models/types'
 
 export interface Foster {
     h3:            string
     content:       string[]
-    img:           Img,
+    img:           Img
     featureBlocks: FosterBlock[]
 }
 
 export interface FosterBlock {
     h3:            string
-    content:       string[],
+    content:       string[]
     img:           Img
 }
 
@@ -36,7 +36,7 @@ export function useFosterData() {
         {
             "h3": "Radiant Homes for Resilient Pups",
             "content": [
-                "We're currently polishing our application process to ensure we provide the most seamless experience for our volunteers and their future guests. While we fine-tune these tools, our digital doors remain wide open for conversation and connection. Opening your home to a dog allows them to finally exhale, trading uncertainty for the quiet magic of a morning snuggle."
+                "You can apply online in a few guided steps, or download a printable application if you prefer. Opening your home to a dog allows them to finally exhale, trading uncertainty for the quiet magic of a morning snuggle."
             ],
             "img": {
                 "src": "/images/foster-sunny-dogs-unsplash.jpg",
@@ -80,19 +80,23 @@ export function useFosterData() {
             href: "/files/NLR-Foster-Application-20260803.docx",
             filename: "NLR-Foster-Application.docx",
             title: "Download the New Leash Rescue foster application",
-            cta: "Download Foster Application"
+            cta: "Foster Application"
         },
-        {
-            href: "/files/NLR-Volunteer-Application-20260803.docx",
-            filename: "NLR-Volunteer-Application.docx",
-            title: "Download the New Leash Rescue volunteer application",
-            cta: "Download Volunteer Application"
-        }
     ]);
+    const onlineApplications = ref<OnlineApplications[]>([
+        {
+            to: '/foster/apply',
+            title: 'Apply online to foster with New Leash Rescue',
+            cta: 'Apply to foster online',
+            icon: 'i-material-symbols-edit-document-rounded',
+            primary: true,
+        },
+    ])
 
     return {
         foster,
         featureBlocks,
         fosterApplication,
+        onlineApplications,
     }
 }

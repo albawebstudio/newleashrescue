@@ -1,5 +1,5 @@
 import type { NitroFetchRequest } from 'nitropack'
-import type { NitroFetchOptions } from "nitropack";
+import type { NitroFetchOptions } from 'nitropack';
 import type { FetchOptions } from 'ofetch'
 
 
