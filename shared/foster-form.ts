@@ -1,8 +1,9 @@
 import type { ApplicationDisclaimer, ApplicationStepBase, HouseholdChild, HouseholdMember, ResidentPet, YesNo } from './application-form-common'
 import {
-  formatChoiceLabel,
+  formatApplicationDisplayValue,
   isApplicationFieldRequired,
   isApplicationFieldVisible,
+  mergeApplicationScalarFields,
   normalizeChoice,
   validateApplicationScalarField,
 } from './application-form-common'
@@ -291,15 +292,14 @@ export function validateFosterApplication(input: unknown): { data?: FosterApplic
   const baseline = createFosterApplication()
   const data = { ...baseline }
 
-  for (const key of Object.keys(baseline) as (keyof FosterApplicationData)[]) {
-    if (key === 'type' || key === 'applicationDate' || key === 'householdMembers' || key === 'householdChildren' || key === 'residentPets' || key === 'fosterInterests') continue
-    const incoming = candidate[key]
-    if (typeof baseline[key] === 'boolean') {
-      ;(data[key] as boolean) = incoming === true
-    } else if (typeof incoming === 'string') {
-      ;(data[key] as string) = incoming.trim().slice(0, 5000)
-    }
-  }
+  mergeApplicationScalarFields(data, baseline, candidate, [
+    'type',
+    'applicationDate',
+    'householdMembers',
+    'householdChildren',
+    'residentPets',
+    'fosterInterests',
+  ])
 
   data.householdMembers = Array.isArray(candidate.householdMembers)
     ? candidate.householdMembers.slice(0, 12).map(member => ({
@@ -335,12 +335,5 @@ export function validateFosterApplication(input: unknown): { data?: FosterApplic
   return Object.keys(errors).length ? { errors } : { data, errors: {} }
 }
 
-export const formatFosterDisplayValue = (field: FosterField, value: string | boolean | string[]): string => {
-  if (field.type === 'multiselect' && Array.isArray(value)) {
-    if (!value.length) return 'Not provided'
-    return value.map(formatChoiceLabel).join(', ')
-  }
-  if (typeof value === 'boolean') return value ? 'Yes' : 'No'
-  if (!value) return 'Not provided'
-  return formatChoiceLabel(String(value))
-}
+export const formatFosterDisplayValue = (field: FosterField, value: string | boolean | string[]): string =>
+  formatApplicationDisplayValue(field, value)

@@ -42,7 +42,7 @@ function validFosterApplication(): FosterApplicationData {
 
 function fillVolunteerField(data: VolunteerApplicationData, field: VolunteerField) {
   if (field.type === 'checkbox') data[field.name] = true as never
-  else if (field.type === 'multiselect') data.volunteerInterests = [normalizeChoice('Adoption events')]
+  else if (field.type === 'multiselect') data.volunteerInterests = [normalizeChoice('Adoption event support')]
   else if (field.type === 'radio') data[field.name] = normalizeChoice(field.options![0]!) as never
   else if (field.type === 'email') data[field.name] = 'applicant@example.com' as never
   else if (field.type === 'tel') data[field.name] = '651-555-0100' as never

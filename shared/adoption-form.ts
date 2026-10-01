@@ -1,3 +1,5 @@
+import { mergeApplicationScalarFields } from './application-form-common'
+
 export type AdoptionType = 'dog' | 'cat'
 export type YesNo = '' | 'yes' | 'no'
 
@@ -175,11 +177,11 @@ const steps: AdoptionStep[] = [
       { name: 'familiarWithHouseTraining', label: 'I am familiar with house training.', type: 'checkbox', appliesTo: 'dog' },
       { name: 'exercisePlan', label: 'How will you exercise your dog?', type: 'textarea', required: true, appliesTo: 'dog' },
       { name: 'sleepingLocation', label: 'Where will your dog sleep at night?', type: 'textarea', required: true, appliesTo: 'dog' },
-      { name: 'backupCaregiverName', label: 'Backup caregiver name', type: 'text', required: true },
+      { name: 'backupCaregiverName', label: 'Who will care for your pet if you can’t?', type: 'text', required: true },
       { name: 'backupCaregiverPhone', label: 'Backup caregiver phone', type: 'tel', required: true },
       { name: 'backupCaregiverRelationship', label: 'Backup caregiver relationship', type: 'text', required: true },
       { name: 'returnCircumstances', label: 'Under what circumstances would you return this pet to New Leash Rescue?', type: 'textarea', required: true },
-      { name: 'desiredCharacteristics', label: 'What characteristics are you looking for?', type: 'textarea', required: true, appliesTo: 'dog' },
+      { name: 'desiredCharacteristics', label: 'What qualities are you looking for in a dog?', type: 'textarea', required: true, appliesTo: 'dog' },
       { name: 'indoorOutdoorPreference', label: 'Are you looking for an indoor or outdoor companion?', type: 'radio', options: ['Indoor', 'Outdoor', 'Both'], required: true, appliesTo: 'dog' },
       { name: 'desiredActivityLevel', label: 'What activity level would you like?', type: 'select', options: ['Low', 'Moderate', 'High', 'No preference'], required: true },
       { name: 'commitsToMedicalCareAndTraining', label: 'I commit to necessary lifelong medical care and obedience training.', type: 'checkbox', required: true, appliesTo: 'dog' },
@@ -302,15 +304,7 @@ export function validateAdoptionApplication(input: unknown): { data?: AdoptionAp
   if (candidate.type !== 'dog' && candidate.type !== 'cat') return { errors: { type: 'Application type must be dog or cat.' } }
   const baseline = createAdoptionApplication(candidate.type)
   const data = { ...baseline }
-  for (const key of Object.keys(baseline) as (keyof AdoptionApplicationData)[]) {
-    if (key === 'type' || key === 'applicationDate' || key === 'householdMembers' || key === 'residentPets') continue
-    const incoming = candidate[key]
-    if (typeof baseline[key] === 'boolean') {
-      ;(data[key] as boolean) = incoming === true
-    } else if (typeof incoming === 'string') {
-      ;(data[key] as string) = incoming.trim().slice(0, 5000)
-    }
-  }
+  mergeApplicationScalarFields(data, baseline, candidate, ['type', 'applicationDate', 'householdMembers', 'residentPets'])
   data.householdMembers = Array.isArray(candidate.householdMembers)
     ? candidate.householdMembers.slice(0, 12).map(member => ({
         fullName: typeof member?.fullName === 'string' ? member.fullName.trim().slice(0, 200) : '',

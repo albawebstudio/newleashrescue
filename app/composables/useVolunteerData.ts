@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import type { Img, OnlineApplications } from '~/models/types'
+import type { ApplicationDownload, Img, OnlineApplications } from '~/models/types'
 
 export interface Volunteer {
     h3:            string
@@ -12,13 +12,6 @@ export interface VolunteerBlock {
     h3:            string
     content:       string[]
     img:           Img
-}
-
-export interface VolunteerApplicationDownload {
-    href:          string
-    filename:      string
-    title:         string
-    cta:           string
 }
 
 export interface VolunteerRole {
@@ -97,7 +90,7 @@ export function useVolunteerData() {
         featureBlocks: featureBlocks.value,
     })
 
-    const volunteerApplication = ref<VolunteerApplicationDownload[]>([
+    const volunteerApplication = ref<ApplicationDownload[]>([
         {
             href: '/files/NLR-Volunteer-Application-20260803.docx',
             filename: 'NLR-Volunteer-Application.docx',

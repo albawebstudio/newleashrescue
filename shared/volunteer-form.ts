@@ -1,8 +1,9 @@
 import type { ApplicationDisclaimer, ApplicationStepBase, YesNo } from './application-form-common'
 import {
-  formatChoiceLabel,
+  formatApplicationDisplayValue,
   isApplicationFieldRequired,
   isApplicationFieldVisible,
+  mergeApplicationScalarFields,
   normalizeChoice,
   validateApplicationScalarField,
 } from './application-form-common'
@@ -52,14 +53,17 @@ export type VolunteerStep = ApplicationStepBase<VolunteerField>
 
 const yesNo = ['Yes', 'No']
 const volunteerInterestOptions = [
-  'Adoption events',
+  'Adoption event support',
   'Animal transport',
   'Dog training',
-  'Fostering',
+  'Foster care',
   'Photography',
   'Grooming',
-  'Web design',
+  'Website design',
   'Social media content',
+  'Laundry for cats at adoption centers',
+  'Cat socialization at adoption centers',
+  'Other'
 ]
 
 const transportInterest = normalizeChoice('Animal transport')
@@ -104,7 +108,7 @@ const steps: VolunteerStep[] = [
     fields: [
       {
         name: 'volunteerStory',
-        label: 'Why would you like to volunteer, and what experience do you have with animals?',
+        label: 'Describe your prior experience working with animals?',
         type: 'textarea',
         required: true,
       },
@@ -204,15 +208,7 @@ export function validateVolunteerApplication(input: unknown): { data?: Volunteer
   const baseline = createVolunteerApplication()
   const data = { ...baseline }
 
-  for (const key of Object.keys(baseline) as (keyof VolunteerApplicationData)[]) {
-    if (key === 'type' || key === 'applicationDate' || key === 'volunteerInterests') continue
-    const incoming = candidate[key]
-    if (typeof baseline[key] === 'boolean') {
-      ;(data[key] as boolean) = incoming === true
-    } else if (typeof incoming === 'string') {
-      ;(data[key] as string) = incoming.trim().slice(0, 5000)
-    }
-  }
+  mergeApplicationScalarFields(data, baseline, candidate, ['type', 'applicationDate', 'volunteerInterests'])
 
   data.volunteerInterests = Array.isArray(candidate.volunteerInterests)
     ? candidate.volunteerInterests
@@ -226,12 +222,5 @@ export function validateVolunteerApplication(input: unknown): { data?: Volunteer
   return Object.keys(errors).length ? { errors } : { data, errors: {} }
 }
 
-export const formatVolunteerDisplayValue = (field: VolunteerField, value: string | boolean | string[]): string => {
-  if (field.type === 'multiselect' && Array.isArray(value)) {
-    if (!value.length) return 'Not provided'
-    return value.map(formatChoiceLabel).join(', ')
-  }
-  if (typeof value === 'boolean') return value ? 'Yes' : 'No'
-  if (!value) return 'Not provided'
-  return formatChoiceLabel(String(value))
-}
+export const formatVolunteerDisplayValue = (field: VolunteerField, value: string | boolean | string[]): string =>
+  formatApplicationDisplayValue(field, value)

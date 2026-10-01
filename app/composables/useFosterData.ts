@@ -1,5 +1,10 @@
-import { ref } from 'vue'
-import type { Img, OnlineApplications } from '~/models/types'
+import { computed, ref } from 'vue'
+import type { ApplicationDownload, Img, OnlineApplications } from '~/models/types'
+
+const fosterHomeIntroWithDownload =
+  'You can apply online in a few guided steps, or download a printable application if you prefer. Opening your home to a dog allows them to finally exhale, trading uncertainty for the quiet magic of a morning snuggle.'
+const fosterHomeIntroOnlineOnly =
+  'You can apply online in a few guided steps. Opening your home to a dog allows them to finally exhale, trading uncertainty for the quiet magic of a morning snuggle.'
 
 export interface Foster {
     h3:            string
@@ -14,15 +19,7 @@ export interface FosterBlock {
     img:           Img
 }
 
-export interface FosterApplication {
-    href:          string
-    filename:      string
-    title:         string
-    cta:           string
-}
-
-export function useFosterData() {
-    const featureBlocks = ref<FosterBlock[]>([
+const baseFeatureBlocks: FosterBlock[] = [
         {
             "h3": "Unstoppable Hearts Fuel Our Mission",
             "content": [
@@ -35,9 +32,7 @@ export function useFosterData() {
         },
         {
             "h3": "Radiant Homes for Resilient Pups",
-            "content": [
-                "You can apply online in a few guided steps, or download a printable application if you prefer. Opening your home to a dog allows them to finally exhale, trading uncertainty for the quiet magic of a morning snuggle."
-            ],
+            "content": [fosterHomeIntroWithDownload],
             "img": {
                 "src": "/images/foster-sunny-dogs-unsplash.jpg",
                 "alt": "Radiant Homes for Resilient Pups"
@@ -63,7 +58,19 @@ export function useFosterData() {
                 "alt": "Bold Impact Through Selfless Service"
             }
         }
-    ])
+]
+
+export function useFosterData() {
+    const applicationDownloadsEnabled = useApplicationDownloadsEnabled()
+    const featureBlocks = computed<FosterBlock[]>(() => baseFeatureBlocks.map(block => {
+        if (block.h3 !== 'Radiant Homes for Resilient Pups') return block
+        return {
+            ...block,
+            content: [
+                applicationDownloadsEnabled.value ? fosterHomeIntroWithDownload : fosterHomeIntroOnlineOnly,
+            ],
+        }
+    }))
     const foster = ref<Foster>({
         "h3": "Unstoppable Hearts Fuel Our Mission",
         "content": [
@@ -73,9 +80,9 @@ export function useFosterData() {
             "src": "",
             "alt": ""
         },
-        "featureBlocks": featureBlocks.value
+        "featureBlocks": baseFeatureBlocks
     });
-    const fosterApplication = ref<FosterApplication[]>([
+    const fosterApplication = ref<ApplicationDownload[]>([
         {
             href: "/files/NLR-Foster-Application-20260803.docx",
             filename: "NLR-Foster-Application.docx",
