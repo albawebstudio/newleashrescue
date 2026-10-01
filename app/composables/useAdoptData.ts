@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-import type { Img } from '~/models/types'
+import type { ApplicationDownload, Img, OnlineApplications } from '~/models/types'
 
 export interface Adopt {
     content: string[]
@@ -17,13 +17,6 @@ export interface FeatureBlock {
     h3:      string
     icon:    string
     content: string[]
-}
-
-export interface AdoptionApplication {
-    href:          string
-    title:         string
-    icon:          string
-    cta:           string
 }
 
 export function useAdoptData() {
@@ -75,23 +68,40 @@ export function useAdoptData() {
         },
         featureBlocks: featureBlocks.value
     })
-    const adoptionApplication = ref<AdoptionApplication[]>([
+    const onlineApplications = ref<OnlineApplications[]>([
         {
-            href: '/adopt/dog',
+            to: '/adopt/dog',
             title: 'Complete the New Leash Rescue dog adoption application',
             icon: 'i-material-symbols-sound-detection-dog-barking-rounded',
             cta: 'Apply to Adopt a Dog',
+            primary: true,
         },
         {
-            href: '/adopt/cat',
+            to: '/adopt/cat',
             title: 'Complete the New Leash Rescue cat adoption application',
             icon: 'i-material-symbols-pets-rounded',
             cta: 'Apply to Adopt a Cat',
-        }
+            primary: true,
+        },
+    ])
+    const adoptionApplicationDownloads = ref<ApplicationDownload[]>([
+        {
+            href: '/files/NLR-Dog-Adoption-Application-20260803.docx',
+            filename: 'NLR-Dog-Adoption-Application.docx',
+            title: 'Download the New Leash Rescue dog adoption application',
+            cta: 'Dog Adoption Application',
+        },
+        {
+            href: '/files/NLR-Cat-Adoption-Application-20260803.docx',
+            filename: 'NLR-Cat-Adoption-Application.docx',
+            title: 'Download the New Leash Rescue cat adoption application',
+            cta: 'Cat Adoption Application',
+        },
     ])
     return {
         adopt,
         adoptPolicy,
-        adoptionApplication
+        onlineApplications,
+        adoptionApplicationDownloads,
     }
 }

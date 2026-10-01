@@ -46,6 +46,7 @@ export default defineNuxtConfig({
         public: {
             siteUrl: process.env.SITE_URL || 'https://newleashrescue.org',
             resendTemplateId: process.env.RESEND_TEMPLATE_ID ?? "",
+            applicationDownloadsEnabled: process.env.NUXT_PUBLIC_APPLICATION_DOWNLOADS_ENABLED === 'true',
         }
     },
     modules: [
