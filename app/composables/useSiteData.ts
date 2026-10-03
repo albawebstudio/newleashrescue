@@ -79,6 +79,13 @@ export function useSiteData() {
             displayText: "Events"
         },
         {
+            title: "Serve",
+            to: "/volunteer",
+            external: false,
+            icon: null,
+            displayText: "Serve"
+        },
+        {
             title: "contact us",
             to: "/contact",
             external: false,

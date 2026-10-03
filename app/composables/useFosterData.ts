@@ -1,28 +1,25 @@
-import { ref } from 'vue'
-import type { Img } from '~/models/types'
+import { computed, ref } from 'vue'
+import type { ApplicationDownload, Img, OnlineApplications } from '~/models/types'
+
+const fosterHomeIntroWithDownload =
+  'You can apply online in a few guided steps, or download a printable application if you prefer. Opening your home to a dog allows them to finally exhale, trading uncertainty for the quiet magic of a morning snuggle.'
+const fosterHomeIntroOnlineOnly =
+  'You can apply online in a few guided steps. Opening your home to a dog allows them to finally exhale, trading uncertainty for the quiet magic of a morning snuggle.'
 
 export interface Foster {
     h3:            string
     content:       string[]
-    img:           Img,
+    img:           Img
     featureBlocks: FosterBlock[]
 }
 
 export interface FosterBlock {
     h3:            string
-    content:       string[],
+    content:       string[]
     img:           Img
 }
 
-export interface FosterApplication {
-    href:          string
-    filename:      string
-    title:         string
-    cta:           string
-}
-
-export function useFosterData() {
-    const featureBlocks = ref<FosterBlock[]>([
+const baseFeatureBlocks: FosterBlock[] = [
         {
             "h3": "Unstoppable Hearts Fuel Our Mission",
             "content": [
@@ -35,9 +32,7 @@ export function useFosterData() {
         },
         {
             "h3": "Radiant Homes for Resilient Pups",
-            "content": [
-                "We're currently polishing our application process to ensure we provide the most seamless experience for our volunteers and their future guests. While we fine-tune these tools, our digital doors remain wide open for conversation and connection. Opening your home to a dog allows them to finally exhale, trading uncertainty for the quiet magic of a morning snuggle."
-            ],
+            "content": [fosterHomeIntroWithDownload],
             "img": {
                 "src": "/images/foster-sunny-dogs-unsplash.jpg",
                 "alt": "Radiant Homes for Resilient Pups"
@@ -63,7 +58,19 @@ export function useFosterData() {
                 "alt": "Bold Impact Through Selfless Service"
             }
         }
-    ])
+]
+
+export function useFosterData() {
+    const applicationDownloadsEnabled = useApplicationDownloadsEnabled()
+    const featureBlocks = computed<FosterBlock[]>(() => baseFeatureBlocks.map(block => {
+        if (block.h3 !== 'Radiant Homes for Resilient Pups') return block
+        return {
+            ...block,
+            content: [
+                applicationDownloadsEnabled.value ? fosterHomeIntroWithDownload : fosterHomeIntroOnlineOnly,
+            ],
+        }
+    }))
     const foster = ref<Foster>({
         "h3": "Unstoppable Hearts Fuel Our Mission",
         "content": [
@@ -73,26 +80,30 @@ export function useFosterData() {
             "src": "",
             "alt": ""
         },
-        "featureBlocks": featureBlocks.value
+        "featureBlocks": baseFeatureBlocks
     });
-    const fosterApplication = ref<FosterApplication[]>([
+    const fosterApplication = ref<ApplicationDownload[]>([
         {
             href: "/files/NLR-Foster-Application-20260803.docx",
             filename: "NLR-Foster-Application.docx",
             title: "Download the New Leash Rescue foster application",
-            cta: "Download Foster Application"
+            cta: "Foster Application"
         },
-        {
-            href: "/files/NLR-Volunteer-Application-20260803.docx",
-            filename: "NLR-Volunteer-Application.docx",
-            title: "Download the New Leash Rescue volunteer application",
-            cta: "Download Volunteer Application"
-        }
     ]);
+    const onlineApplications = ref<OnlineApplications[]>([
+        {
+            to: '/foster/apply',
+            title: 'Apply online to foster with New Leash Rescue',
+            cta: 'Apply to foster online',
+            icon: 'i-material-symbols-edit-document-rounded',
+            primary: true,
+        },
+    ])
 
     return {
         foster,
         featureBlocks,
         fosterApplication,
+        onlineApplications,
     }
 }

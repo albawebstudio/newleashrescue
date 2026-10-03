@@ -8,6 +8,14 @@ export default defineNuxtConfig({
     compatibilityDate: '2026-03-09',
     devtools: { enabled: true },
 
+    typescript: {
+        nodeTsConfig: {
+            compilerOptions: {
+                types: ['node'],
+            },
+        },
+    },
+
     css: [
         '@/assets/css/main.css',
     ],
@@ -29,9 +37,16 @@ export default defineNuxtConfig({
 
     runtimeConfig: {
         resendApiKey: process.env.RESEND_API_KEY ?? "",
+        contactName: process.env.CONTACT_NAME ?? "New Leash Rescue",
+        contactEmail: process.env.CONTACT_EMAIL ?? "website@newleashrescue.org",
+        toEmail: process.env.TO_EMAIL ?? "adopt@newleashrescue.org",
+        adoptionToEmail: process.env.ADOPTION_TO_EMAIL ?? "adopt@newleashrescue.org",
+        fosterToEmail: process.env.FOSTER_TO_EMAIL ?? "adopt@newleashrescue.org",
+        volunteerToEmail: process.env.VOLUNTEER_TO_EMAIL ?? "adopt@newleashrescue.org",
         public: {
             siteUrl: process.env.SITE_URL || 'https://newleashrescue.org',
             resendTemplateId: process.env.RESEND_TEMPLATE_ID ?? "",
+            applicationDownloadsEnabled: process.env.NUXT_PUBLIC_APPLICATION_DOWNLOADS_ENABLED === 'true',
         }
     },
     modules: [
@@ -87,7 +102,8 @@ export default defineNuxtConfig({
             include: [
                 'swiper/vue',
                 'swiper/modules',
-            ]
-        }
+                'date-fns',
+            ],
+        },
     },
 })

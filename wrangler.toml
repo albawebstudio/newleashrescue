@@ -13,6 +13,7 @@ pages_build_output_dir = "dist"
 [vars]
 # GOOGLE TAG
 GA_ID = "G-Z2SQX5PD13"
+NUXT_PUBLIC_APPLICATION_DOWNLOADS_ENABLED = "false"
 
 [[d1_databases]]
 binding = "newleashrescue_content_db"
@@ -32,6 +33,7 @@ database_id = "cd667311-b735-4f01-a28c-4cad713a89b5"
 # Production deployment.
 [env.production.vars]
 NUXT_PUBLIC_SITE_URL = "https://newleashrescue.org"
+NUXT_PUBLIC_APPLICATION_DOWNLOADS_ENABLED = "false"
 GA_ID = "G-Z2SQX5PD13"
 
 [[env.production.d1_databases]]

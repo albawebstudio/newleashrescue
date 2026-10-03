@@ -20,7 +20,7 @@ interface FormData {
   email: string,
   phone: string,
   form_time: Date | string,
-  message: string,
+  messageBody: string,
 }
 
 const showSpinner = shallowRef(false)
@@ -33,7 +33,7 @@ const getInitialFormData = (): FormData => ({
   email: "",
   phone: "",
   form_time: new Date(),
-  message: "",
+  messageBody: "",
 })
 
 const form = ref<FormData>(getInitialFormData());
@@ -43,7 +43,7 @@ const isFormValid = computed(() => {
   return form.value.name.trim() &&
       form.value.email.trim() &&
       form.value.subject.trim() &&
-      form.value.message.trim();
+      form.value.messageBody.trim();
 });
 
 const submitForm = async () => {
@@ -105,7 +105,7 @@ const clearSuccess = () => {
               v-model:email.trim="form.email"
               v-model:phone.trim="form.phone"
               v-model:subject.trim="form.subject"
-              v-model:message.trim="form.message"
+              v-model:messageBody.trim="form.messageBody"
               @submit="submitForm"
           />
 
