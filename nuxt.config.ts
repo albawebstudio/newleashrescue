@@ -1,3 +1,8 @@
+import {
+    CLOUDFLARE_WORKER_ROUTE_INCLUDES,
+    STATIC_PRERENDER_ROUTES,
+} from './shared/static-hosting'
+
 export default defineNuxtConfig({
     app: {
         head: {
@@ -88,14 +93,26 @@ export default defineNuxtConfig({
             }
         },
     },
-    content: {
-        database: {
-            type: 'd1',
-            bindingName: 'newleashrescue_content_db',
-        },
+    // Legal/content pages: build-time SQLite, browser WASM on navigation — no D1 at runtime.
+    routeRules: {
+        '/api/**': { prerender: false },
+        '/**': { prerender: true },
     },
     nitro: {
         preset: 'cloudflare-pages',
+        prerender: {
+            crawlLinks: true,
+            routes: [...STATIC_PRERENDER_ROUTES],
+        },
+        cloudflare: {
+            nodeCompat: true,
+            pages: {
+                defaultRoutes: false,
+                routes: {
+                    include: [...CLOUDFLARE_WORKER_ROUTE_INCLUDES],
+                },
+            },
+        },
     },
     vite: {
         optimizeDeps: {
