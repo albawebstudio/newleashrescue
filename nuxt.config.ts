@@ -93,6 +93,12 @@ export default defineNuxtConfig({
             }
         },
     },
+    // Build-time content DB via Node 22 `node:sqlite` (no native better-sqlite3 on CI).
+    content: {
+        experimental: {
+            sqliteConnector: 'native',
+        },
+    },
     // Legal/content pages: build-time SQLite, browser WASM on navigation — no D1 at runtime.
     routeRules: {
         '/api/**': { prerender: false },

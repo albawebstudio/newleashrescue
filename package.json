@@ -45,7 +45,6 @@
     "@nuxt/content": "^3.16.1",
     "@nuxt/image": "^2.1.0",
     "@nuxt/ui": "^4.11.2",
-    "better-sqlite3": "^12.11.1",
     "date-fns": "^4.4.0",
     "nuxt": "^4.5.2",
     "nuxt-gtag": "^4.1.0",

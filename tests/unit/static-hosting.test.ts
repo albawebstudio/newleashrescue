@@ -24,4 +24,11 @@ describe('static hosting configuration', () => {
     const wrangler = readFileSync(resolve(process.cwd(), 'wrangler.toml'), 'utf8')
     expect(wrangler).not.toMatch(/d1_databases/)
   })
+
+  it('uses Node native sqlite for content builds (no better-sqlite3)', () => {
+    const nuxtConfig = readFileSync(resolve(process.cwd(), 'nuxt.config.ts'), 'utf8')
+    expect(nuxtConfig).toMatch(/sqliteConnector:\s*['"]native['"]/)
+    const pkg = readFileSync(resolve(process.cwd(), 'package.json'), 'utf8')
+    expect(pkg).not.toMatch(/"better-sqlite3"/)
+  })
 })

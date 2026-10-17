@@ -1,6 +1,7 @@
 allowBuilds:
   '@parcel/watcher': true
-  better-sqlite3: true
+  # Optional peer of @nuxt/content; we use node:sqlite at build time instead.
+  better-sqlite3: false
   esbuild: true
   sharp: true
   vue-demi: true
