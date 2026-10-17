@@ -9,12 +9,11 @@
     "animal-rescue",
     "no-kill-shelter",
     "non-profit",
-    "aws-amplify",
-    "vue-router"
+    "cloudflare-pages"
   ],
   "private": true,
   "engines": {
-    "node": ">=22.18.0"
+    "node": ">=22.16.0"
   },
   "homepage": "https://github.com/andrewalba/newleashrescue#readme",
   "bugs": {
@@ -36,8 +35,8 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --dotenv .env.local",
-    "wrangler:dev": "nuxt build && wrangler pages dev dist",
-    "generate": "nuxt generate",
+    "wrangler:dev": "nuxt build --dotenv .env.local && wrangler pages dev dist",
+    "generate": "nuxt build",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "test": "vitest run"
@@ -46,51 +45,21 @@
     "@nuxt/content": "^3.16.1",
     "@nuxt/image": "^2.1.0",
     "@nuxt/ui": "^4.11.2",
-    "@react-email/render": "^2.1.0",
-    "add": "^2.0.9",
-    "better-sqlite3": "^12.11.1",
     "date-fns": "^4.4.0",
     "nuxt": "^4.5.2",
     "nuxt-gtag": "^4.1.0",
     "nuxt-security": "^2.6.0",
-    "pnpm": "^11.28.0",
     "resend": "^6.30.0",
-    "swiper": "^12.2.0",
-    "tailwindcss": "^4.3.3",
-    "vue": "^3.5.43",
-    "vue-router": "^4.6.4"
+    "swiper": "^12.2.0"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.16.20",
     "@iconify-json/material-symbols": "^1.2.93",
     "@types/node": "^25.9.8",
-    "debug": "^4.4.3",
-    "extend": "^3.0.2",
-    "nuxt-swiper": "^2.0.2",
-    "parse5": "^8.0.1",
-    "rehype-raw": "^7.0.0",
-    "remark-emoji": "^5.0.2",
-    "remark-gfm": "^4.0.1",
-    "remark-mdc": "^3.11.1",
-    "remark-rehype": "^11.1.2",
-    "sass": "^1.105.0",
-    "unified": "^11.0.5",
-    "unist-util-visit": "^5.1.0",
     "vitest": "^4.1.11",
     "wrangler": "^4.141.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/andrewalba/newleashrescue.git"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "better-sqlite3",
-      "esbuild",
-      "sharp",
-      "vue-demi",
-      "workerd"
-    ]
   }
 }
